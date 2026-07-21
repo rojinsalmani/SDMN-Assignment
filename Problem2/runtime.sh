@@ -20,7 +20,7 @@ fi
 echo "=> Setting up container: $HOSTNAME"
 
 if [ ! -d "$MY_FS" ]; then
-    echo "=> Cloning base Ubuntu 20.04 filesystem..."
+    echo "=> Cloning base Ubuntu 20.04 filesystem"
     cp -a "$BASE_FS" "$MY_FS"
 else
     echo "=> Filesystem for $HOSTNAME already exists."
@@ -28,7 +28,7 @@ fi
 
 CGROUP_CMD=""
 if [ -n "$MEM_LIMIT" ]; then
-    echo "=> Setting memory limit to ${MEM_LIMIT}MB..."
+    echo "=> Setting memory limit to ${MEM_LIMIT}MB"
     MEM_BYTES=$((MEM_LIMIT * 1024 * 1024))
     CGNAME="container_$HOSTNAME"
     
@@ -52,8 +52,8 @@ EOF
 
 chmod +x "$MY_FS/.init.sh"
 
-echo "=> Starting container..."
+echo "=> Starting container"
 $CGROUP_CMD unshare -p -f -n -u -m chroot "$MY_FS" /.init.sh "$HOSTNAME"
 
-echo "=> Container exited. Cleaning up /proc..."
+echo "=> Container exited. Cleaning up /proc"
 umount "$MY_FS/proc" 2>/dev/null
