@@ -1,0 +1,48 @@
+rojin@rojin-virtual-machine:~/sdmn-assignment/Problem3$ cd ~/sdmn-assignment/Problem3
+docker build -t problem3-server .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  6.144kB
+Step 1/5 : FROM python:3.9-slim
+3.9-slim: Pulling from library/python
+ea56f685404a: Pulling fs layer
+38513bd72563: Pulling fs layer
+b3ec39b36ae8: Pulling fs layer
+fc7443084902: Pulling fs layer
+a5e5b1b19090: Download complete
+ea56f685404a: Download complete
+b3ec39b36ae8: Download complete
+967a6079ce08: Download complete
+fc7443084902: Download complete
+38513bd72563: Download complete
+38513bd72563: Pull complete
+b3ec39b36ae8: Pull complete
+fc7443084902: Pull complete
+ea56f685404a: Pull complete
+Digest: sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b
+Status: Downloaded newer image for python:3.9-slim
+ ---> 2d97f6910b16
+Step 2/5 : WORKDIR /app
+ ---> Running in 2274ee11c4d2
+ ---> Removed intermediate container 2274ee11c4d2
+ ---> 3709463a916e
+Step 3/5 : COPY server.py .
+ ---> e23f21929b20
+Step 4/5 : EXPOSE 8000
+ ---> Running in 4bb1b84df4a5
+ ---> Removed intermediate container 4bb1b84df4a5
+ ---> 875bdcd664e1
+Step 5/5 : CMD ["python3", "server.py"]
+ ---> Running in 98cc99e19896
+ ---> Removed intermediate container 98cc99e19896
+ ---> 21fb4e966daf
+Successfully built 21fb4e966daf
+Successfully tagged problem3-server:latest
+rojin@rojin-virtual-machine:~/sdmn-assignment/Problem3$ docker run -d -p 8000:8000 --name my-server problem3-server
+3686ac90e39884dadad782b191175e13421777f0e398c6cee56aeb3c32b506d1
+rojin@rojin-virtual-machine:~/sdmn-assignment/Problem3$ curl -X GET http://localhost:8000/api/v1/status
+{"status": "OK"}
+rojin@rojin-virtual-machine:~/sdmn-assignment/Problem3$ curl -X POST -H "Content-Type: application/json" -d '{"status": "not OK"}' http://localhost:8000/api/v1/status                                                       curl -X POST -H "Content-Type: application/json" -d '{"status": "not OK"}' http://localhost:8000/api/v1/status
+{"status": "not OK"}
